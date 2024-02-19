@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\UserRoutePermissionMiddleware;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -23,7 +24,15 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 
-Route::middleware('auth')->group(function () {
+// Route::middleware('auth')->group(function () {
+    // Routes that require authentication
+    // Route::get('/dashboard',function () {
+    //     return view('layouts.dashboard');
+    // })->name('dashboard');
+    // Route::get('/dashboard', 'DashboardController@index')->name('dashboard');
+    // Add more authenticated routes here
+// });
+Route::middleware([UserRoutePermissionMiddleware::class])->group(function () {
     // Routes that require authentication
     Route::get('/dashboard',function () {
         return view('layouts.dashboard');
