@@ -21,6 +21,13 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
-Route::get('/dashboard',function () {
-    return view('layouts.dashboard');
-})->name('dashboard');
+
+
+Route::middleware('auth')->group(function () {
+    // Routes that require authentication
+    Route::get('/dashboard',function () {
+        return view('layouts.dashboard');
+    })->name('dashboard');
+    // Route::get('/dashboard', 'DashboardController@index')->name('dashboard');
+    // Add more authenticated routes here
+});
