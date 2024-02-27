@@ -649,28 +649,39 @@
 
                 <div class="section-title">
                     <h2>Pricing</h2>
-                    <p>{{ $pricingDescription }}</p>
+                    @foreach ($sectionDescriptions as $item)
+                        @if ($item->title == 'pricing')
+                            <p>{{ $item->description }}</p>
+                        @endif
+                    @endforeach
                 </div>
 
                 <div class="row">
-
                     @foreach ($products as $product)
-                    <div class="col-lg-4" data-aos="fade-up" data-aos-delay="100">
-                        <div class="box">
-                            <h3 class="text-capitalize">{{ $product->title }}</h3>
-                            <h4><sup>$</sup>{{ $product->price }}<span>per {{ $product->package_validity }}</span></h4>
-                            <ul>
-                                @foreach ($features as $index => $item)
-                                @if ($product->title=='Free Plan' && $item->isBasic=='false')
-                                <li class="na"><i class="bx bx-x"></i><span>{{ $item->feature_name }}</span></li>
-                                @else
-                                <li><i class="bx bx-check"></i>{{ $item->feature_name }}</li>
-                                @endif
-                                @endforeach
-                            </ul>
-                            <a href="products/{{ $product->id }}" class="buy-btn">Get Started</a>
+                        <div class="col-lg-4" data-aos="fade-up" data-aos-delay="100">
+                            <div class="box">
+                                <h3 class="text-capitalize">{{ $product->title }}</h3>
+                                <h4><sup>$</sup>{{ $product->price }}<span>per {{ $product->package_validity }}</span>
+                                </h4>
+                                <ul>
+                                    @foreach ($features as $index => $item)
+                                        @if ($product->title == 'Free Plan' && $item->isBasic == 'off')
+                                            <li class="na"><i
+                                                    class="bx bx-x"></i><span>{{ $item->feature_name }}</span></li>
+                                        @elseif($product->title == 'Business Plan' && $item->business == 'off')
+                                            <li class="na"><i
+                                                    class="bx bx-x"></i><span>{{ $item->feature_name }}</span></li>
+                                        @elseif($product->title == 'Developer Plan' && $item->developer == 'off')
+                                            <li class="na"><i
+                                                    class="bx bx-x"></i><span>{{ $item->feature_name }}</span></li>
+                                        @else
+                                            <li><i class="bx bx-check"></i>{{ $item->feature_name }}</li>
+                                        @endif
+                                    @endforeach
+                                </ul>
+                                <a href="products/{{ $product->id }}" class="buy-btn">Get Started</a>
+                            </div>
                         </div>
-                    </div>
                     @endforeach
 
                     {{-- <div class="col-lg-4 mt-4 mt-lg-0" data-aos="fade-up" data-aos-delay="200">

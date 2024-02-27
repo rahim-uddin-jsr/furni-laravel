@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BackendController;
 use App\Http\Middleware\UserRoutePermissionMiddleware;
 use App\Product;
 use Illuminate\Support\Facades\Auth;
@@ -66,6 +67,7 @@ Route::middleware([UserRoutePermissionMiddleware::class])->group(function () {
         Route::get('pricing', function () {
             return view('dashboard.pricing');
         })->name('pricing');
+        Route::put('/pricing/update', 'BackendController@updatePricing' )->name('dashboardUpdatePricing');
     });
 
     // Route::get('/dashboard', 'DashboardController@index')->name('dashboard');
