@@ -77,7 +77,12 @@ class BackendController extends Controller
 
     }
 
-    public function deleteFeature($id) {
+    // public function deleteFeature($id) {
+    //     // dd($id);
+    //     ProductFeatures::find($id)->delete();
+    //     return back();
+    // }
+    public function deleteFeature1($id) {
         // dd($id);
         ProductFeatures::find($id)->delete();
         return back();

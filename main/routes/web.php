@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BackendController;
 use App\Http\Middleware\UserRoutePermissionMiddleware;
 use App\Product;
 use App\ProductFeatures;
@@ -67,8 +68,10 @@ Route::middleware([UserRoutePermissionMiddleware::class])->group(function () {
             return view('dashboard.pricing');
         })->name('pricing');
         Route::put('/pricing/update', 'BackendController@updatePricing')->name('dashboardUpdatePricing');
-        Route::get('deleteFeature/{id}', 'BackendController@deleteFeature')->name('deleteFeature');
+        // Route::get('deleteFeature/{id}', 'BackendController@deleteFeature')->name('deleteFeature');
+        Route::delete('deleteFeature/{id}', 'BackendController@deleteFeature1')->name('deleteFeature1');
         Route::post('addFeature', 'BackendController@addFeature')->name('addFeature');
+        // Route::delete('users/{id}', ['BackendController@delete'])->name('users.delete');
     });
 
     // Route::get('/dashboard', 'DashboardController@index')->name('dashboard');

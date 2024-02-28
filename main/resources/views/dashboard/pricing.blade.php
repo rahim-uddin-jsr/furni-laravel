@@ -36,7 +36,7 @@
                         <div class="d-flex gap-2 my-1">
                             <input name="{{ 'feature' . $key }}" type="text" class="form-control border-secondary"
                                 value="{{ $item->feature_name }}" id="inputAddres5s">
-                            <a class="btn btn-danger btn-sm" href="{{ route('deleteFeature', [$item->id]) }}">Delete</a>
+                            <a class="btn btn-danger btn-sm" data-url="{{ route('deleteFeature1', [$item->id]) }}">Delete</a>
                         </div>
                     </div>
                     <div class="col-4 d-flex">
@@ -85,12 +85,10 @@
         </div>
     </form>
 
-
     <form action="{{ route('addFeature') }}" method="post">
         @csrf
         <div class="div">
             <h2 class="text-center my-3">Add features</h2>
-
             <div class="row my-1">
                 <div class="col-6"><strong>Feature Name</strong></div>
                 <div class="col-4 text-center row">
@@ -103,7 +101,8 @@
             <div class="d-flex">
                 <div class="col-6">
                     <div class="d-flex gap-2">
-                        <input name="feature_name" placeholder="feature name here" type="text" class="form-control border-secondary" id="inputAddres5s">
+                        <input name="feature_name" placeholder="feature name here" type="text"
+                            class="form-control border-secondary" id="inputAddres5s">
                     </div>
                 </div>
                 <div class="col-4 d-flex">
@@ -122,5 +121,6 @@
         </div>
     </form>
     </div>
+
 
 @endsection

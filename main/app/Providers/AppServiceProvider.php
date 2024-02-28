@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Portfolio;
 use App\Product;
 use App\ProductFeatures;
 use App\SectionDescription;
@@ -30,12 +31,13 @@ class AppServiceProvider extends ServiceProvider
             $products=Product::get();
             $features=ProductFeatures::get();
             $sectionDescriptions=SectionDescription::get();
-            // $pricingDescription='';
-            // foreach ($sectionDescriptions as $item) {
-            //     if ($item->section_name=='pricing') {
-            //         $pricingDescription=$item->description;
-            //     }
-            // }
+            $portfolios=Portfolio::get();
+            $portfolioDescription='';
+            foreach ($sectionDescriptions as $item) {
+                if ($item->section_name=='portfolio') {
+                    $portfolioDescription=$item->description;
+                }
+            }
             $free_plan_price=0;
             $business_plan_price=0;
             $developer_plan_price=0;
@@ -52,6 +54,8 @@ class AppServiceProvider extends ServiceProvider
 
 
             $view->with('sectionDescriptions', $sectionDescriptions);
+            $view->with('portfolioDescription', $portfolioDescription);
+            $view->with('portfolios', $portfolios);
             $view->with('products', $products);
             $view->with('features', $features);
             $view->with('free_plan_price', $free_plan_price);
