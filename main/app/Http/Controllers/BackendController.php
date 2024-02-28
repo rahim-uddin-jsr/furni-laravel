@@ -7,6 +7,14 @@ use App\ProductFeatures;
 use App\SectionDescription;
 use Illuminate\Http\Request;
 
+function checkIsNull($item)
+{
+    if ($item) {
+        return 'on';
+    } else {
+        return "off";
+    }
+}
 class BackendController extends Controller
 {
     public function updatePricing(Request $request)
@@ -18,80 +26,71 @@ class BackendController extends Controller
             $pricingDescription->update([
                 'description' => $request->section_description,
             ]);
-            $products_features0 = ProductFeatures::find(1);
-            $products_features1 = ProductFeatures::find(2);
-            $products_features2 = ProductFeatures::find(3);
-            $products_features3 = ProductFeatures::find(4);
-            $products_features4 = ProductFeatures::find(5);
-            function checkIsNull($item)
-            {
-                if ($item) {
-                    return 'on';
-                } else {
-                    return "off";
-                }
-            }
 
-// $totalFeaturesCount=ProductFeatures::count();
-            // // dd($totalFeaturesCount);
-            // for ($i=1; $i < $totalFeaturesCount+1; $i++) {
-            //     $products_feature = ProductFeatures::find($i);
-            //     // dd($products_feature);
+            $totalFeaturesCount = ProductFeatures::all();
+            foreach ($totalFeaturesCount as $key => $value) {
+                $featureIndex = $key+ 1;
+                $products_feature = ProductFeatures::find($value->id);
+                $featureIndex = "feature$key";
+                $basicIndex = "basic$key";
+                $businessIndex = "business$key";
+                $developerIndex = "developer$key";
+                $products_feature->update([
+                    'feature_name' => $request->$featureIndex,
+                    'isBasic' => checkIsNull($request->$basicIndex),
+                    'business' => checkIsNull($request->$businessIndex),
+                    'developer' => checkIsNull($request->$developerIndex),
+                ]);
+            }
+            // for ($i = 0; $i < $totalFeaturesCount; $i++) {
+            //     $featureIndex = $i + 1;
+            //     $products_feature = ProductFeatures::find($featureIndex);
+            //     $featureIndex = "feature$i";
+            //     $basicIndex = "basic$i";
+            //     $businessIndex = "business$i";
+            //     $developerIndex = "developer$i";
             //     $products_feature->update([
-            //         'feature_name'=>$request->feature.$i,
-            //         'isBasic'=>checkIsNull($request->basic.($i-1)),
-            //         'business'=>checkIsNull($request->business.($i-1)),
-            //         'developer'=>checkIsNull($request->developer.($i-1)),
+            //         'feature_name' => $request->$featureIndex,
+            //         'isBasic' => checkIsNull($request->$basicIndex),
+            //         'business' => checkIsNull($request->$businessIndex),
+            //         'developer' => checkIsNull($request->$developerIndex),
             //     ]);
-            //     dd($i);
             // }
-            $products_features0->update([
-                'feature_name' => $request->feature0,
-                'isBasic' => checkIsNull($request->basic0),
-                'business' => checkIsNull($request->business0),
-                'developer' => checkIsNull($request->developer0),
-            ]);
-            $products_features1->update([
-                'feature_name' => $request->feature1,
-                'isBasic' => checkIsNull($request->basic1),
-                'business' => checkIsNull($request->business1),
-                'developer' => checkIsNull($request->developer1),
-            ]);
-            $products_features2->update([
-                'feature_name' => $request->feature2,
-                'isBasic' => checkIsNull($request->basic2),
-                'business' => checkIsNull($request->business2),
-                'developer' => checkIsNull($request->developer2),
-            ]);
-            $products_features3->update([
-                'feature_name' => $request->feature3,
-                'isBasic' => checkIsNull($request->basic3),
-                'business' => checkIsNull($request->business3),
-                'developer' => checkIsNull($request->developer3),
-            ]);
-            $products_features4->update([
-                'feature_name' => $request->feature4,
-                'isBasic' => checkIsNull($request->basic4),
-                'business' => checkIsNull($request->business4),
-                'developer' => checkIsNull($request->developer4),
-            ]);
+
             $product1 = Product::find(1);
             $product2 = Product::find(2);
             $product3 = Product::find(3);
             // dd($product1);
             $product1->update([
-                'price' => $request->free_plan_price
+                'price' => $request->free_plan_price,
             ]);
             $product2->update([
-                'price' => $request->business_plan_price
+                'price' => $request->business_plan_price,
             ]);
             $product3->update([
-                'price' => $request->developer_plan_price
+                'price' => $request->developer_plan_price,
             ]);
         } else {
             dd($request->all());
         }
         return back();
 
+    }
+
+    public function deleteFeature($id) {
+        // dd($id);
+        ProductFeatures::find($id)->delete();
+        return back();
+    }
+    public function addFeature(Request  $request) {
+        ProductFeatures::create([
+            'feature_name'=>$request->feature_name,
+            'isBasic'=>checkIsNull($request->isBasic),
+            'business'=>checkIsNull($request->isBusiness),
+            'developer'=>checkIsNull($request->isDeveloper),
+        ]);
+        // dd($request->all());
+        // ProductFeatures::find($id)->delete();
+        return back();
     }
 }

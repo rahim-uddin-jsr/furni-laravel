@@ -1,8 +1,8 @@
 <?php
 
-use App\Http\Controllers\BackendController;
 use App\Http\Middleware\UserRoutePermissionMiddleware;
 use App\Product;
+use App\ProductFeatures;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Route;
 | routes are loaded by the RouteServiceProvider within a group which
 | contains the "web" middleware group. Now create something great!
 |
-*/
+ */
 
 Route::get('/', function () {
     return view('welcome');
@@ -25,19 +25,18 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/products', function () {
-$products=Product::with('features')->get();
-return $products;
+    $products = Product::with('features')->get();
+    return $products;
 }
 )->name('products');
 
-
 // Route::middleware('auth')->group(function () {
-    // Routes that require authentication
-    // Route::get('/dashboard',function () {
-    //     return view('layouts.dashboard');
-    // })->name('dashboard');
-    // Route::get('/dashboard', 'DashboardController@index')->name('dashboard');
-    // Add more authenticated routes here
+// Routes that require authentication
+// Route::get('/dashboard',function () {
+//     return view('layouts.dashboard');
+// })->name('dashboard');
+// Route::get('/dashboard', 'DashboardController@index')->name('dashboard');
+// Add more authenticated routes here
 // });
 Route::middleware([UserRoutePermissionMiddleware::class])->group(function () {
     // Routes that require authentication
@@ -67,7 +66,9 @@ Route::middleware([UserRoutePermissionMiddleware::class])->group(function () {
         Route::get('pricing', function () {
             return view('dashboard.pricing');
         })->name('pricing');
-        Route::put('/pricing/update', 'BackendController@updatePricing' )->name('dashboardUpdatePricing');
+        Route::put('/pricing/update', 'BackendController@updatePricing')->name('dashboardUpdatePricing');
+        Route::get('deleteFeature/{id}', 'BackendController@deleteFeature')->name('deleteFeature');
+        Route::post('addFeature', 'BackendController@addFeature')->name('addFeature');
     });
 
     // Route::get('/dashboard', 'DashboardController@index')->name('dashboard');
