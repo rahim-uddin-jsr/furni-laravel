@@ -431,7 +431,7 @@
 
                     @foreach ($portfolios as $key => $item)
                         <div class="col-lg-4 col-md-6 portfolio-item filter-{{ $item->category }}">
-                            <div class="portfolio-img"><img src="{{ $item->image_url }}" class="img-fluid"
+                            <div class="portfolio-img"><img src="{{ url( $item->image_url) }}" class="img-fluid"
                                     alt=""></div>
                             <div class="portfolio-info">
                                 <h4>{{ $item->name }}</h4>

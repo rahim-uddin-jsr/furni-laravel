@@ -33,6 +33,12 @@ class AppServiceProvider extends ServiceProvider
             $sectionDescriptions=SectionDescription::get();
             $portfolios=Portfolio::get();
             $portfolioDescription='';
+            $categories=[];
+            foreach ($portfolios as $item) {
+                if (!in_array($item->category,$categories)) {
+                    array_push($categories,$item->category);
+                }
+            }
             foreach ($sectionDescriptions as $item) {
                 if ($item->section_name=='portfolio') {
                     $portfolioDescription=$item->description;
@@ -55,6 +61,7 @@ class AppServiceProvider extends ServiceProvider
 
             $view->with('sectionDescriptions', $sectionDescriptions);
             $view->with('portfolioDescription', $portfolioDescription);
+            $view->with('categories', $categories);
             $view->with('portfolios', $portfolios);
             $view->with('products', $products);
             $view->with('features', $features);

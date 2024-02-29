@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Portfolio;
 use App\Product;
 use App\ProductFeatures;
 use App\SectionDescription;
@@ -96,6 +97,28 @@ class BackendController extends Controller
         ]);
         // dd($request->all());
         // ProductFeatures::find($id)->delete();
+        return back();
+    }
+
+    public function updateDescription(Request $request) {
+        $description = SectionDescription::find($request->id);
+       $description ->update([
+            'description' => $request->section_description,
+        ]);
+        return back();
+    }
+    public function deletePortfolio($id) {
+        Portfolio::find($id)->delete();
+        return back();
+    }
+
+    public function updatePortfolio(Request $request, $id) {
+        $file                  = $request->file('image');
+        dd($file);
+    //     $description = SectionDescription::find($request->id);
+    //    $description ->update([
+    //         'description' => $request->section_description,
+    //     ]);
         return back();
     }
 }
