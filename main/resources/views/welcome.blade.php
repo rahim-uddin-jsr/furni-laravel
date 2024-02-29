@@ -431,12 +431,12 @@
 
                     @foreach ($portfolios as $key => $item)
                         <div class="col-lg-4 col-md-6 portfolio-item filter-{{ $item->category }}">
-                            <div class="portfolio-img"><img src="{{ url( $item->image_url) }}" class="img-fluid"
+                            <div class="portfolio-img"><img src="{{ url( 'assets/img/home/portfolio/'.$item->image_url) }}" class="img-fluid"
                                     alt=""></div>
                             <div class="portfolio-info">
                                 <h4>{{ $item->name }}</h4>
                                 <p>{{ $item->category }}</p>
-                                <a href="{{ $item->image_url }}" data-gallery="portfolioGallery"
+                                <a href="{{ 'assets/img/home/portfolio/'.$item->image_url }}" data-gallery="portfolioGallery"
                                     class="portfolio-lightbox preview-link" title="{{ $item->name }}"><i
                                         class="bx bx-plus"></i></a>
                                 <a href="portfolio-details.html" class="details-link" title="More Details"><i

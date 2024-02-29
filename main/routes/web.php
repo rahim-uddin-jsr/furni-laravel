@@ -75,6 +75,7 @@ Route::middleware([UserRoutePermissionMiddleware::class])->group(function () {
         Route::put('/description/update', 'BackendController@updateDescription')->name('updateDescription');
         Route::delete('deletePortfolio/{id}', 'BackendController@deletePortfolio')->name('deletePortfolio');
         Route::put('updatePortfolio/{id}', 'BackendController@updatePortfolio')->name('updatePortfolio');
+        Route::post('addPortfolio', 'BackendController@addPortfolio')->name('addPortfolio');
     });
 
     // Route::get('/dashboard', 'DashboardController@index')->name('dashboard');

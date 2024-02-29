@@ -7,6 +7,7 @@ use App\Product;
 use App\ProductFeatures;
 use App\SectionDescription;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 
 function checkIsNull($item)
 {
@@ -30,7 +31,7 @@ class BackendController extends Controller
 
             $totalFeaturesCount = ProductFeatures::all();
             foreach ($totalFeaturesCount as $key => $value) {
-                $featureIndex = $key+ 1;
+                $featureIndex = $key + 1;
                 $products_feature = ProductFeatures::find($value->id);
                 $featureIndex = "feature$key";
                 $basicIndex = "basic$key";
@@ -83,42 +84,90 @@ class BackendController extends Controller
     //     ProductFeatures::find($id)->delete();
     //     return back();
     // }
-    public function deleteFeature1($id) {
+    public function deleteFeature1($id)
+    {
         // dd($id);
         ProductFeatures::find($id)->delete();
         return back();
     }
-    public function addFeature(Request  $request) {
+    public function addFeature(Request $request)
+    {
         ProductFeatures::create([
-            'feature_name'=>$request->feature_name,
-            'isBasic'=>checkIsNull($request->isBasic),
-            'business'=>checkIsNull($request->isBusiness),
-            'developer'=>checkIsNull($request->isDeveloper),
+            'feature_name' => $request->feature_name,
+            'isBasic' => checkIsNull($request->isBasic),
+            'business' => checkIsNull($request->isBusiness),
+            'developer' => checkIsNull($request->isDeveloper),
         ]);
         // dd($request->all());
         // ProductFeatures::find($id)->delete();
         return back();
     }
 
-    public function updateDescription(Request $request) {
+    public function updateDescription(Request $request)
+    {
         $description = SectionDescription::find($request->id);
-       $description ->update([
+        $description->update([
             'description' => $request->section_description,
         ]);
         return back();
     }
-    public function deletePortfolio($id) {
-        Portfolio::find($id)->delete();
+    public function deletePortfolio($id)
+    {
+        $portfolio = Portfolio::find($id);
+        $portfolio->delete();
+        $destination = 'assets/img/home/portfolio/' . $portfolio->image_url;
+        if (File::exists($destination)) {
+            File::delete($destination);
+        }
         return back();
     }
 
-    public function updatePortfolio(Request $request, $id) {
-        $file                  = $request->file('image');
-        dd($file);
-    //     $description = SectionDescription::find($request->id);
-    //    $description ->update([
-    //         'description' => $request->section_description,
-    //     ]);
+    public function updatePortfolio(Request $request, $id)
+    {
+        $portfolioUpdate = Portfolio::find($id);
+        if ($request->hasfile('update_img')) {
+            $file = $request->file('update_img');
+            $extension = $file->getClientOriginalExtension();
+            $name = $file->getClientOriginalName();
+            // dd($extension,$name);
+            $destination = 'assets/img/home/portfolio/' . $portfolioUpdate->image_url;
+            $filename = uniqid() . '.' . $extension;
+            $file->move('assets/img/home/portfolio', $filename);
+            $portfolioUpdate->update([
+                'image_url' => $filename,
+
+            ]);
+            if (File::exists($destination)) {
+                File::delete($destination);
+            }
+
+        }
+        $portfolioUpdate->update([
+            'category'=>$request->category,
+            'name'=>$request->name,
+        ]);
+        return back();
+    }
+
+    public function addPortfolio(Request $request) {
+        // dd($request->all());
+        if ($request->hasfile('update_img')) {
+            $file = $request->file('update_img');
+            $extension = $file->getClientOriginalExtension();
+            // $name = $file->getClientOriginalName();
+            $filename = uniqid() . '.' . $extension;
+            $file->move('assets/img/home/portfolio', $filename);
+            Portfolio::create([
+                'image_url' => $filename,
+                'name' => $request->name,
+                'category' => $request->category,
+            ]);
+        }else{
+            Portfolio::create([
+                'name' => $request->name,
+                'category' => $request->category,
+            ]);
+        }
         return back();
     }
 }
