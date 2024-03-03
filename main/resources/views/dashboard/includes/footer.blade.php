@@ -48,20 +48,49 @@
     // input.addEventListener('change', previewPhoto);
 
     // const inputImage= document.getElementById('uploadImage').value;
-    const previewPhoto = () => {
-    const file = input.files;
-    if (file) {
-        const fileReader = new FileReader();
-        const preview = document.getElementById('file-preview');
-fileReader.onload = function (event) {
-            preview.setAttribute('src', event.target.result);
-            preview.classList.remove('d-none');
-        }
-        fileReader.readAsDataURL(file[0]);
-    }
-}
-input.addEventListener("change", previewPhoto);
+    const preview = document.getElementById('preview-images');
+    const preview-update = document.getElementById('preview-update-images');
 
+
+    document.getElementById('addPortfolioBtn').addEventListener('click',()=>{
+        preview.innerHTML =''
+        console.log('first')
+    })
+    document.getElementById('updateImage').addEventListener('change',()=>{
+        preview-update.innerHTML =''
+        console.log('first')
+    })
+    const previewPhoto = () => {
+        const files = input.files;
+        console.log(files)
+        for(const idx in files) {
+                const file = files[idx];
+                console.log(file)
+                if (file) {
+                    const fileReader = new FileReader();
+                    const id='file-preview'+idx
+                    const img=document.createElement('img')
+                    img.classList.add('img-fluid')
+                    img.classList.add('mx-auto')
+                    img.classList.add('text-center')
+                    img.style.height='200px'
+                    // <img src="#" style="height: 200px" class="d-none img-fluid mx-auto text-center"
+                    //             alt="Preview Uploaded Image" id="file-preview0">
+                    //         <img src="#" style="height: 200px" class="d-none img-fluid mx-auto text-center"
+                    //             alt="Preview Uploaded Image" id="file-preview1">
+                    //         <img src="#" style="height: 200px" class="d-none img-fluid mx-auto text-center"
+                    //             alt="Preview Uploaded Image" id="file-preview2">
+                    // console.log(preview)
+                    fileReader.onload = function(event) {
+                        img.setAttribute('src', event.target.result);
+                        preview.appendChild(img);
+                        // preview.classList.remove('d-none');
+                    }
+                    fileReader.readAsDataURL(file);
+                }
+        }
+    }
+    input.addEventListener("change", previewPhoto);
 </script>
 </body>
 

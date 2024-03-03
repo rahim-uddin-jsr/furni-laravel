@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Portfolio;
+use App\PortfolioImage;
 use App\Product;
 use App\ProductFeatures;
 use App\SectionDescription;
@@ -121,6 +122,41 @@ class BackendController extends Controller
         }
         return back();
     }
+    public function deletePortfolioSingleImage($id)
+    {
+        $portfolio = PortfolioImage::find($id);
+        // dd($portfolio);
+        $portfolio->delete();
+        $destination = 'assets/img/home/portfolio/' . $portfolio->image_url;
+        if (File::exists($destination)) {
+            File::delete($destination);
+        }
+        return back();
+    }
+    public function updatePortfolioSingleImage(Request $request, $id)
+    {
+        dd($id);
+        dd($request->all());
+        $portfolioUpdateImage = PortfolioImage::find($id);
+        if ($request->hasfile('update_img')) {
+            $file = $request->file('update_img');
+            $extension = $file->getClientOriginalExtension();
+            $name = $file->getClientOriginalName();
+            // dd($extension,$name);
+            $destination = 'assets/img/home/portfolio/' . $portfolioUpdateImage->image_url;
+            $filename = uniqid() . '.' . $extension;
+            $file->move('assets/img/home/portfolio', $filename);
+            $portfolioUpdateImage->update([
+                'image_url' => $filename,
+
+            ]);
+            if (File::exists($destination)) {
+                File::delete($destination);
+            }
+
+        }
+        return back();
+    }
 
     public function updatePortfolio(Request $request, $id)
     {
@@ -152,21 +188,30 @@ class BackendController extends Controller
     public function addPortfolio(Request $request) {
         // dd($request->all());
         if ($request->hasfile('update_img')) {
-            $file = $request->file('update_img');
+            $files = $request->file('update_img');
+            $lastId= Portfolio::insertGetId([
+                 // 'image_url' => $filename,
+                 'name' => $request->name,
+                 'category' => $request->category,
+                 'image_url' => $request->image_url,
+                 'project_title' => $request->project_title,
+                 'project_description' => $request->project_description,
+                 'client' => $request->client,
+                 'project_date' => $request->project_date,
+                 'project_url' => $request->project_url,
+
+             ]);
+            foreach ($files as $key => $file) {
+
             $extension = $file->getClientOriginalExtension();
             // $name = $file->getClientOriginalName();
             $filename = uniqid() . '.' . $extension;
             $file->move('assets/img/home/portfolio', $filename);
-            Portfolio::create([
+            PortfolioImage::create([
+                'portfolio_id'=>$lastId,
                 'image_url' => $filename,
-                'name' => $request->name,
-                'category' => $request->category,
             ]);
-        }else{
-            Portfolio::create([
-                'name' => $request->name,
-                'category' => $request->category,
-            ]);
+        }
         }
         return back();
     }

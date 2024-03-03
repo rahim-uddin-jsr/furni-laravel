@@ -1,9 +1,7 @@
 <?php
 
-use App\Http\Controllers\BackendController;
 use App\Http\Middleware\UserRoutePermissionMiddleware;
 use App\Product;
-use App\ProductFeatures;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -36,9 +34,24 @@ Route::get('/products', function () {
 // Route::get('/dashboard',function () {
 //     return view('layouts.dashboard');
 // })->name('dashboard');
-// Route::get('/dashboard', 'DashboardController@index')->name('dashboard');
+// Route::get('/hero', 'DashboardController@index')->name('dashboard');
 // Add more authenticated routes here
 // });
+Route::get('hero', function () {
+    return redirect('/#hero');
+})->name('hero');
+Route::get('about', function () {
+    return redirect('/#about');
+})->name('about-section');
+Route::get('portfolio-home', function () {
+    return redirect('/#portfolio');
+})->name('portfolio-section');
+Route::get('services-home', function () {
+    return redirect('/#services');
+})->name('services-section');
+Route::get('team-section', function () {
+    return redirect('/#team');
+})->name('team-section');
 Route::middleware([UserRoutePermissionMiddleware::class])->group(function () {
     // Routes that require authentication
     Route::prefix('dashboard')->group(function () {
@@ -76,8 +89,10 @@ Route::middleware([UserRoutePermissionMiddleware::class])->group(function () {
         Route::delete('deletePortfolio/{id}', 'BackendController@deletePortfolio')->name('deletePortfolio');
         Route::put('updatePortfolio/{id}', 'BackendController@updatePortfolio')->name('updatePortfolio');
         Route::post('addPortfolio', 'BackendController@addPortfolio')->name('addPortfolio');
+        Route::get('delete-portfolio-single-image/{id}', 'BackendController@deletePortfolioSingleImage')->name('deletePortfolioSingleImage');
+        Route::put('update-portfolio-single-image/{id}', 'BackendController@updatePortfolioSingleImage')->name('updatePortfolioSingleImage');
     });
 
-    // Route::get('/dashboard', 'DashboardController@index')->name('dashboard');
+    Route::get('/portfolio-details/{id}', 'FrontendController@portfolioDetails')->name('portfoliodetails');
     // Add more authenticated routes here
 });

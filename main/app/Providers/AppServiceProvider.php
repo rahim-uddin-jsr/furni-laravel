@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Categories;
 use App\Portfolio;
 use App\Product;
 use App\ProductFeatures;
@@ -31,14 +32,9 @@ class AppServiceProvider extends ServiceProvider
             $products=Product::get();
             $features=ProductFeatures::get();
             $sectionDescriptions=SectionDescription::get();
-            $portfolios=Portfolio::get();
+            $portfolios=Portfolio::with('images')->get();
             $portfolioDescription='';
-            $categories=[];
-            foreach ($portfolios as $item) {
-                if (!in_array($item->category,$categories)) {
-                    array_push($categories,$item->category);
-                }
-            }
+            $categories=Categories::get('category_name');
             foreach ($sectionDescriptions as $item) {
                 if ($item->section_name=='portfolio') {
                     $portfolioDescription=$item->description;
@@ -57,7 +53,6 @@ class AppServiceProvider extends ServiceProvider
                     $developer_plan_price=$item->price;
                 }
             }
-
 
             $view->with('sectionDescriptions', $sectionDescriptions);
             $view->with('portfolioDescription', $portfolioDescription);
