@@ -144,7 +144,7 @@ class BackendController extends Controller
             $name = $file->getClientOriginalName();
             // dd($extension,$name);
             $destination = 'assets/img/home/portfolio/' . $portfolioUpdateImage->image_url;
-            $filename = uniqid() . '.' . $extension;
+            $filename = uniqid() . Date('His').'.' . $extension;
             $file->move('assets/img/home/portfolio', $filename);
             $portfolioUpdateImage->update([
                 'image_url' => $filename,
@@ -161,26 +161,37 @@ class BackendController extends Controller
     public function updatePortfolio(Request $request, $id)
     {
         $portfolioUpdate = Portfolio::find($id);
-        if ($request->hasfile('update_img')) {
-            $file = $request->file('update_img');
+        // dd($request->file());
+        if ($request->hasfile("update_img".$id)) {
+            $files = $request->file("update_img".$id);
+            foreach ($files as $key => $file) {
             $extension = $file->getClientOriginalExtension();
             $name = $file->getClientOriginalName();
             // dd($extension,$name);
             $destination = 'assets/img/home/portfolio/' . $portfolioUpdate->image_url;
-            $filename = uniqid() . '.' . $extension;
+            $filename = uniqid() .Date('His'). '.' . $extension;
             $file->move('assets/img/home/portfolio', $filename);
-            $portfolioUpdate->update([
+            PortfolioImage::create([
+                'portfolio_id'=>$id,
                 'image_url' => $filename,
-
             ]);
-            if (File::exists($destination)) {
-                File::delete($destination);
-            }
+            // $portfolioUpdate->update([
+            //     'image_url' => $filename,
+            // ]);
+            // if (File::exists($destination)) {
+            //     File::delete($destination);
+            // }
+        }
 
         }
         $portfolioUpdate->update([
             'category'=>$request->category,
             'name'=>$request->name,
+            'project_title' => $request->project_title,
+            'project_description' => $request->project_description,
+            'client' => $request->client,
+            'project_date' => $request->project_date,
+            'project_url' => $request->project_url,
         ]);
         return back();
     }
@@ -205,7 +216,7 @@ class BackendController extends Controller
 
             $extension = $file->getClientOriginalExtension();
             // $name = $file->getClientOriginalName();
-            $filename = uniqid() . '.' . $extension;
+            $filename = uniqid() . Date('His'). '.' . $extension;
             $file->move('assets/img/home/portfolio', $filename);
             PortfolioImage::create([
                 'portfolio_id'=>$lastId,

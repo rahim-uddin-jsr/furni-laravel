@@ -45,24 +45,23 @@
     }
 
     const input = document.getElementById('uploadImage');
+    const inputUpdate = document.getElementById('updateImage');
     // input.addEventListener('change', previewPhoto);
 
     // const inputImage= document.getElementById('uploadImage').value;
     const preview = document.getElementById('preview-images');
-    const preview-update = document.getElementById('preview-update-images');
+    // const previewUpdate = document.getElementById('preview-update-images');
 
 
     document.getElementById('addPortfolioBtn').addEventListener('click',()=>{
         preview.innerHTML =''
-        console.log('first')
     })
-    document.getElementById('updateImage').addEventListener('change',()=>{
-        preview-update.innerHTML =''
-        console.log('first')
+    document.getElementById('updateImageBtn').addEventListener('change',()=>{
+        previewUpdate.innerHTML =''
     })
     const previewPhoto = () => {
         const files = input.files;
-        console.log(files)
+        console.log(files);
         for(const idx in files) {
                 const file = files[idx];
                 console.log(file)
@@ -90,7 +89,50 @@
                 }
         }
     }
+    const previewDistroy = (id)=>{
+        const previewUpdate = document.getElementById('preview-update-images'+id);
+        previewUpdate.innerHTML="";
+    }
+    const previewPhotoUpdatePhoto = (id) => {
+        console.log(id)
+        const previewUpdate = document.getElementById('preview-update-images'+id);
+        const files = document.getElementById('updateImage'+id).files;
+        console.log('updateImage'+id)
+        console.log(files);
+        for(const idx in files) {
+                const file = files[idx];
+                // console.log(file)
+                if (file) {
+                    const fileReader = new FileReader();
+                    // const id='file-preview'+idx
+                    const img=document.createElement('img')
+                    img.classList.add('img-fluid')
+                    img.classList.add('mx-auto')
+                    img.classList.add('text-center')
+                    img.style.height='200px'
+                    // <img src="#" style="height: 200px" class="d-none img-fluid mx-auto text-center"
+                    //             alt="Preview Uploaded Image" id="file-preview0">
+                    //         <img src="#" style="height: 200px" class="d-none img-fluid mx-auto text-center"
+                    //             alt="Preview Uploaded Image" id="file-preview1">
+                    //         <img src="#" style="height: 200px" class="d-none img-fluid mx-auto text-center"
+                    //             alt="Preview Uploaded Image" id="file-preview2">
+                    // console.log(preview)
+                    fileReader.onload = function(event) {
+                        img.setAttribute('src', event.target.result);
+                        previewUpdate.appendChild(img);
+                        // preview.classList.remove('d-none');
+                    }
+                    fileReader.readAsDataURL(file);
+                }
+        }
+    }
     input.addEventListener("change", previewPhoto);
+    // inputUpdate.addEventListener("change", previewPhotoUpdatePhoto);
+//     const up=document.getElementsByClassName('update_images');
+//     for (const iterator of up) {
+// iterator.addEventListener("change", previewPhotoUpdatePhoto);
+//     }
+    // console.log(up)
 </script>
 </body>
 

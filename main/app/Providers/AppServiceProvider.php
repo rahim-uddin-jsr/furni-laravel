@@ -33,6 +33,7 @@ class AppServiceProvider extends ServiceProvider
             $features=ProductFeatures::get();
             $sectionDescriptions=SectionDescription::get();
             $portfolios=Portfolio::with('images')->get();
+            // dd(count($portfolios[0]->images));
             $portfolioDescription='';
             $categories=Categories::get('category_name');
             foreach ($sectionDescriptions as $item) {
