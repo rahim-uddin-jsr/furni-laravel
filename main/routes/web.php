@@ -94,6 +94,7 @@ Route::middleware([UserRoutePermissionMiddleware::class])->group(function () {
         Route::post('addPortfolio', 'BackendController@addPortfolio')->name('addPortfolio');
         Route::get('delete-portfolio-single-image/{id}', 'BackendController@deletePortfolioSingleImage')->name('deletePortfolioSingleImage');
         Route::put('update-portfolio-single-image/{id}', 'BackendController@updatePortfolioSingleImage')->name('updatePortfolioSingleImage');
+        Route::get('make-image-primary/{id}', 'BackendController@makeImagePrimary')->name('makeImagePrimary');
     });
 
     Route::get('/portfolio-details/{id}', 'FrontendController@portfolioDetails')->name('portfoliodetails');

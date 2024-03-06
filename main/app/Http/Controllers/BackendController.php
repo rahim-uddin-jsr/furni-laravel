@@ -11,7 +11,6 @@ use App\SectionDescription;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 
-
 class BackendController extends Controller
 {
 
@@ -124,7 +123,7 @@ class BackendController extends Controller
     }
     public function updatePortfolioSingleImage(Request $request, $id)
     {
-        dd($id);
+        // dd($id);
         dd($request->all());
         $portfolioUpdateImage = PortfolioImage::find($id);
         if ($request->hasfile('update_img')) {
@@ -144,6 +143,19 @@ class BackendController extends Controller
             }
 
         }
+        return back();
+    }
+
+    public function makeImagePrimary(Request $request, $id)
+    {
+        $image=PortfolioImage::find($id);
+        $product_id=$image->portfolio_id;
+        // dd($product_id);
+        PortfolioImage::where('portfolio_id', $product_id)
+    ->update(['is_primary' => null]);
+        $image->update([
+            'is_primary'=>true,
+        ]);
         return back();
     }
 
@@ -203,36 +215,46 @@ class BackendController extends Controller
 
             ]);
             foreach ($files as $key => $file) {
-
                 $extension = $file->getClientOriginalExtension();
                 // $name = $file->getClientOriginalName();
                 $filename = uniqid() . Date('His') . '.' . $extension;
                 $file->move('assets/img/home/portfolio', $filename);
-                PortfolioImage::create([
-                    'portfolio_id' => $lastId,
-                    'image_url' => $filename,
-                ]);
+                if ($key == 0) {
+                    PortfolioImage::create([
+                        'portfolio_id' => $lastId,
+                        'image_url' => $filename,
+                        'is_primary' => true,
+                    ]);
+                } else {
+                    PortfolioImage::create([
+                        'portfolio_id' => $lastId,
+                        'image_url' => $filename,
+                    ]);
+                }
             }
         }
         return back();
     }
 
-    public function addCategory(Request $request) {
+    public function addCategory(Request $request)
+    {
         Categories::create([
             'category_name' => $request->category_name,
         ]);
         return back();
     }
-    public function updateCategory(Request $request, $id) {
-        $category=Categories::find($id);
+    public function updateCategory(Request $request, $id)
+    {
+        $category = Categories::find($id);
         // dd($category);
         $category->update([
             'category_name' => $request->category_name,
         ]);
         return back();
     }
-    public function deleteCategory(Request $request, $id) {
-        $category=Categories::find($id);
+    public function deleteCategory(Request $request, $id)
+    {
+        $category = Categories::find($id);
         $category->delete();
         return back();
     }

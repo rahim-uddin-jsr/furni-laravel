@@ -305,13 +305,20 @@
 
                 <div class="row portfolio-container" data-aos="fade-up" data-aos-delay="200">
                     @foreach ($portfolios as $key => $item)
-                        <div class="col-lg-4 col-md-6 portfolio-item filter-{{ $item->category }}">
-                            <div class="portfolio-img"><img src="{{ url( 'assets/img/home/portfolio/'.$item->images[0]->image_url) }}" class="img-fluid"
-                                    alt=""></div>
+
+                    <div class="col-lg-4 col-md-6 portfolio-item filter-{{ $item->category }}">
+                            <div class="portfolio-img">
+                                @foreach ($item->images as $image)
+                                   @if ($image->is_primary)
+                                   <img src="{{ url( 'assets/img/home/portfolio/'.$image->image_url) }}" class="img-fluid"
+                                   alt="">
+                                   @endif
+                                @endforeach
+                            </div>
                             <div class="portfolio-info">
                                 <h4>{{ $item->name }}</h4>
                                 <p>{{ $item->category }}</p>
-                                <a href="{{ 'assets/img/home/portfolio/'.$item->images[0]->image_url }}" data-gallery="portfolioGallery"
+                                <a href="{{ 'assets/img/home/portfolio/' }}" data-gallery="portfolioGallery"
                                     class="portfolio-lightbox preview-link" title="{{ $item->name }}"><i
                                         class="bx bx-plus"></i></a>
                                 <a href="{{ route('portfoliodetails',[$item->id]) }}" class="details-link" title="More Details"><i

@@ -41,27 +41,50 @@
 <script src="{{ asset('assets/js/main.js') }}"></script>
 <script>
     $('.show-confirm').click(function(e) {
-         const form = $(this).closest('form');
-         e.preventDefault();
-         Swal.fire({
-             title: "Are you sure?",
-             text: "You won't be able to revert this!",
-             icon: "warning",
-             showCancelButton: true,
-             confirmButtonColor: "#3085d6",
-             cancelButtonColor: "#d33",
-             confirmButtonText: "Yes, delete it!"
-         }).then((result) => {
-             if (result.isConfirmed) {
+        const form = $(this).closest('form');
+        e.preventDefault();
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete it!"
+        }).then((result) => {
+            if (result.isConfirmed) {
                 form.submit();
-                 Swal.fire({
-                     title: "Deleted!",
-                     text: "Your file has been deleted.",
-                     icon: "success"
-                 });
-             }
-         });
-     });
+                Swal.fire({
+                    title: "Deleted!",
+                    text: "Your file has been deleted.",
+                    icon: "success"
+                });
+            }
+        });
+    });
+    $('.delete-confirm').click(function(e) {
+        const form = $(this).closest('form');
+        e.preventDefault();
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete it!"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                var href = this.getAttribute('href');
+                window.location.href = href;
+                Swal.fire({
+                    title: "Deleted!",
+                    text: "Your file has been deleted.",
+                    icon: "success"
+                });
+            }
+        });
+    });
     const input = document.getElementById('uploadImage');
     const inputUpdate = document.getElementById('updateImage');
     // input.addEventListener('change', previewPhoto);
@@ -71,85 +94,85 @@
     // const previewUpdate = document.getElementById('preview-update-images');
 
 
-    document.getElementById('addPortfolioBtn').addEventListener('click',()=>{
-        preview.innerHTML =''
+    document.getElementById('addPortfolioBtn').addEventListener('click', () => {
+        preview.innerHTML = ''
     })
-    document.getElementById('updateImageBtn').addEventListener('change',()=>{
-        previewUpdate.innerHTML =''
+    document.getElementById('updateImageBtn').addEventListener('change', () => {
+        previewUpdate.innerHTML = ''
     })
     const previewPhoto = () => {
         const files = input.files;
         console.log(files);
-        for(const idx in files) {
-                const file = files[idx];
-                console.log(file)
-                if (file) {
-                    const fileReader = new FileReader();
-                    const id='file-preview'+idx
-                    const img=document.createElement('img')
-                    img.classList.add('img-fluid')
-                    img.classList.add('mx-auto')
-                    img.classList.add('text-center')
-                    img.style.height='200px'
-                    // <img src="#" style="height: 200px" class="d-none img-fluid mx-auto text-center"
-                    //             alt="Preview Uploaded Image" id="file-preview0">
-                    //         <img src="#" style="height: 200px" class="d-none img-fluid mx-auto text-center"
-                    //             alt="Preview Uploaded Image" id="file-preview1">
-                    //         <img src="#" style="height: 200px" class="d-none img-fluid mx-auto text-center"
-                    //             alt="Preview Uploaded Image" id="file-preview2">
-                    // console.log(preview)
-                    fileReader.onload = function(event) {
-                        img.setAttribute('src', event.target.result);
-                        preview.appendChild(img);
-                        // preview.classList.remove('d-none');
-                    }
-                    fileReader.readAsDataURL(file);
+        for (const idx in files) {
+            const file = files[idx];
+            console.log(file)
+            if (file) {
+                const fileReader = new FileReader();
+                const id = 'file-preview' + idx
+                const img = document.createElement('img')
+                img.classList.add('img-fluid')
+                img.classList.add('mx-auto')
+                img.classList.add('text-center')
+                img.style.height = '200px'
+                // <img src="#" style="height: 200px" class="d-none img-fluid mx-auto text-center"
+                //             alt="Preview Uploaded Image" id="file-preview0">
+                //         <img src="#" style="height: 200px" class="d-none img-fluid mx-auto text-center"
+                //             alt="Preview Uploaded Image" id="file-preview1">
+                //         <img src="#" style="height: 200px" class="d-none img-fluid mx-auto text-center"
+                //             alt="Preview Uploaded Image" id="file-preview2">
+                // console.log(preview)
+                fileReader.onload = function(event) {
+                    img.setAttribute('src', event.target.result);
+                    preview.appendChild(img);
+                    // preview.classList.remove('d-none');
                 }
+                fileReader.readAsDataURL(file);
+            }
         }
     }
-    const previewDistroy = (id)=>{
-        const previewUpdate = document.getElementById('preview-update-images'+id);
-        previewUpdate.innerHTML="";
+    const previewDistroy = (id) => {
+        const previewUpdate = document.getElementById('preview-update-images' + id);
+        previewUpdate.innerHTML = "";
     }
     const previewPhotoUpdatePhoto = (id) => {
         console.log(id)
-        const previewUpdate = document.getElementById('preview-update-images'+id);
-        const files = document.getElementById('updateImage'+id).files;
-        console.log('updateImage'+id)
+        const previewUpdate = document.getElementById('preview-update-images' + id);
+        const files = document.getElementById('updateImage' + id).files;
+        console.log('updateImage' + id)
         console.log(files);
-        for(const idx in files) {
-                const file = files[idx];
-                // console.log(file)
-                if (file) {
-                    const fileReader = new FileReader();
-                    // const id='file-preview'+idx
-                    const img=document.createElement('img')
-                    img.classList.add('img-fluid')
-                    img.classList.add('mx-auto')
-                    img.classList.add('text-center')
-                    img.style.height='200px'
-                    // <img src="#" style="height: 200px" class="d-none img-fluid mx-auto text-center"
-                    //             alt="Preview Uploaded Image" id="file-preview0">
-                    //         <img src="#" style="height: 200px" class="d-none img-fluid mx-auto text-center"
-                    //             alt="Preview Uploaded Image" id="file-preview1">
-                    //         <img src="#" style="height: 200px" class="d-none img-fluid mx-auto text-center"
-                    //             alt="Preview Uploaded Image" id="file-preview2">
-                    // console.log(preview)
-                    fileReader.onload = function(event) {
-                        img.setAttribute('src', event.target.result);
-                        previewUpdate.appendChild(img);
-                        // preview.classList.remove('d-none');
-                    }
-                    fileReader.readAsDataURL(file);
+        for (const idx in files) {
+            const file = files[idx];
+            // console.log(file)
+            if (file) {
+                const fileReader = new FileReader();
+                // const id='file-preview'+idx
+                const img = document.createElement('img')
+                img.classList.add('img-fluid')
+                img.classList.add('mx-auto')
+                img.classList.add('text-center')
+                img.style.height = '200px'
+                // <img src="#" style="height: 200px" class="d-none img-fluid mx-auto text-center"
+                //             alt="Preview Uploaded Image" id="file-preview0">
+                //         <img src="#" style="height: 200px" class="d-none img-fluid mx-auto text-center"
+                //             alt="Preview Uploaded Image" id="file-preview1">
+                //         <img src="#" style="height: 200px" class="d-none img-fluid mx-auto text-center"
+                //             alt="Preview Uploaded Image" id="file-preview2">
+                // console.log(preview)
+                fileReader.onload = function(event) {
+                    img.setAttribute('src', event.target.result);
+                    previewUpdate.appendChild(img);
+                    // preview.classList.remove('d-none');
                 }
+                fileReader.readAsDataURL(file);
+            }
         }
     }
     input.addEventListener("change", previewPhoto);
     // inputUpdate.addEventListener("change", previewPhotoUpdatePhoto);
-//     const up=document.getElementsByClassName('update_images');
-//     for (const iterator of up) {
-// iterator.addEventListener("change", previewPhotoUpdatePhoto);
-//     }
+    //     const up=document.getElementsByClassName('update_images');
+    //     for (const iterator of up) {
+    // iterator.addEventListener("change", previewPhotoUpdatePhoto);
+    //     }
     // console.log(up)
 </script>
 </body>

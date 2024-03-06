@@ -42,34 +42,37 @@
                             <form action="{{ route('updateCategory', $item->id) }}" method="post">
                                 @method('put')
                                 @csrf
-                                <button type="button" class="btn btn-info" data-toggle="modal" data-target="#updateCategoryModal{{ $item->id }}">Update category</button>
+                                <button type="button" class="btn btn-info" data-toggle="modal"
+                                    data-target="#updateCategoryModal{{ $item->id }}">Update category</button>
                                 {{-- Modal  --}}
-                                <div class="modal fade" id="updateCategoryModal{{ $item->id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal fade" id="updateCategoryModal{{ $item->id }}" tabindex="-1"
+                                    role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                     <div class="modal-dialog" role="document">
-                                      <div class="modal-content">
-                                        <div class="modal-header">
-                                          <h5 class="modal-title" id="exampleModalLabel">Update category</h5>
-                                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                          </button>
-                                        </div>
-                                        <div class="modal-body text-left">
-                                            <label for="updateCategory" class="text-left mb-2">
-                                                Enter category name
-                                            </label>
-                                            <input
-                                            id="updateCategory"
-                                            class="mb-1 w-100 border-secondary-subtle input-text rounded px-3 form-control border-secondary"
-                                            type="text" placeholder="Enter updated category name" name="category_name"
-                                            value="{{ $item->category_name }}">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLabel">Update category</h5>
+                                                <button type="button" class="close" data-dismiss="modal"
+                                                    aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body text-left">
+                                                <label for="updateCategory" class="text-left mb-2">
+                                                    Enter category name
+                                                </label>
+                                                <input id="updateCategory"
+                                                    class="mb-1 w-100 border-secondary-subtle input-text rounded px-3 form-control border-secondary"
+                                                    type="text" placeholder="Enter updated category name"
+                                                    name="category_name" value="{{ $item->category_name }}">
                                             </div>
                                             <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                <button type="button" class="btn btn-secondary"
+                                                    data-dismiss="modal">Close</button>
                                                 <button type="submit" class="btn btn-primary">Update</button>
+                                            </div>
                                         </div>
-                                      </div>
                                     </div>
-                                  </div>
+                                </div>
                             </form>
                             <form action="{{ route('deleteCategory', $item->id) }}" method="post">
                                 @method('delete')
@@ -248,9 +251,14 @@
                                                                     src="{{ url('assets/img/home/portfolio/' . $image->image_url) }}"
                                                                     class="img-fluid img-thumbnail" alt="">
                                                                 <a href="{{ route('deletePortfolioSingleImage', [$image->id]) }}"
-                                                                    class="btn btn-danger mt-2 show-confirm">DELETE</a>
-                                                                <div class="row row-cols-4">
-                                                                </div>
+                                                                    class="btn btn-danger mt-2 delete-confirm">DELETE</a>
+                                                                    @if($image->is_primary)
+                                                                    <button disabled
+                                                                        class="btn btn-success mt-2 show-confirm">primary</button>
+                                                                    @else
+                                                                    <a href="{{ route('makeImagePrimary',[$image->id]) }}"
+                                                                        class="btn btn-primary mt-2   ">Make Primary</a>
+                                                                    @endif
                                                             </div>
                                                         </div>
                                                     @endforeach

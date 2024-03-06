@@ -18,6 +18,7 @@ class CreatePortfolioImagesTable extends Migration
             $table->id();
             $table->foreignId('portfolio_id')->constrained('portfolios')->onDelete('cascade');
             $table->text('image_url');
+            $table->boolean('is_primary')->nullable()->default(false);
             $table->timestamps();
         });
     }
