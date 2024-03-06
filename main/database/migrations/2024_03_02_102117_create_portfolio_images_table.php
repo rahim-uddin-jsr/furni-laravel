@@ -16,7 +16,7 @@ class CreatePortfolioImagesTable extends Migration
     {
         Schema::create('portfolio_images', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('portfolio_id')->constrained('portfolios');
+            $table->foreignId('portfolio_id')->constrained('portfolios')->onDelete('cascade');
             $table->text('image_url');
             $table->timestamps();
         });

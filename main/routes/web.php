@@ -84,6 +84,9 @@ Route::middleware([UserRoutePermissionMiddleware::class])->group(function () {
         // Route::get('deleteFeature/{id}', 'BackendController@deleteFeature')->name('deleteFeature');
         Route::delete('deleteFeature/{id}', 'BackendController@deleteFeature1')->name('deleteFeature1');
         Route::post('addFeature', 'BackendController@addFeature')->name('addFeature');
+        Route::post('addCategory', 'BackendController@addCategory')->name('addCategory');
+        Route::put('updateCategory/{id}', 'BackendController@updateCategory')->name('updateCategory');
+        Route::delete('deleteCategory/{id}', 'BackendController@deleteCategory')->name('deleteCategory');
         // Route::delete('users/{id}', ['BackendController@delete'])->name('users.delete');
         Route::put('/description/update', 'BackendController@updateDescription')->name('updateDescription');
         Route::delete('deletePortfolio/{id}', 'BackendController@deletePortfolio')->name('deletePortfolio');

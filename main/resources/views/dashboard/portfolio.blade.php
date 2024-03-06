@@ -7,6 +7,82 @@
     <li class="breadcrumb-item active">Portfolio</li>
 @endsection
 @section('dashboardMain')
+    <!-- Button trigger modal -->
+    <form action="{{ route('addCategory') }}" method="post">
+        @csrf
+        <div class="">
+            <h5>Add Category</h5>
+            <div class="">
+                <div class="input-group mb-3">
+                    <input name="category_name"
+                        class="border-secondary-subtle input-text rounded px-3 form-control border-secondary" type="text"
+                        placeholder="Category name here">
+                    {{-- <button class=" btn btn-primary ">Add</button> --}}
+                    <button type="submit" class="btn btn-primary" type="button">Add Category</button>
+                </div>
+            </div>
+        </div>
+    </form>
+    <div>
+        <table class="table text-center">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Category Name</th>
+                    <th class="text-center" scope="col">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach ($categories as $key => $item)
+                    {{ $item->category_name }}
+                    <tr>
+                        <th scope="row">{{ $key + 1 }}</th>
+                        <td>{{ $item->category_name }}</td>
+                        <td class="d-flex justify-content-center gap-3">
+                            <form action="{{ route('updateCategory', $item->id) }}" method="post">
+                                @method('put')
+                                @csrf
+                                <button type="button" class="btn btn-info" data-toggle="modal" data-target="#updateCategoryModal{{ $item->id }}">Update category</button>
+                                {{-- Modal  --}}
+                                <div class="modal fade" id="updateCategoryModal{{ $item->id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                      <div class="modal-content">
+                                        <div class="modal-header">
+                                          <h5 class="modal-title" id="exampleModalLabel">Update category</h5>
+                                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                          </button>
+                                        </div>
+                                        <div class="modal-body text-left">
+                                            <label for="updateCategory" class="text-left mb-2">
+                                                Enter category name
+                                            </label>
+                                            <input
+                                            id="updateCategory"
+                                            class="mb-1 w-100 border-secondary-subtle input-text rounded px-3 form-control border-secondary"
+                                            type="text" placeholder="Enter updated category name" name="category_name"
+                                            value="{{ $item->category_name }}">
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                <button type="submit" class="btn btn-primary">Update</button>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                            </form>
+                            <form action="{{ route('deleteCategory', $item->id) }}" method="post">
+                                @method('delete')
+                                @csrf
+                                <button type="submit" class="btn btn-danger show-confirm">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+    </div>
+
     <h2 class="my-3 mb-3">Add Portfolio</h2>
     <!-- Button trigger modal -->
     <div class="text-center">
@@ -121,9 +197,7 @@
                     <td>
                         <div class="">
                             <img style="height: 80px"
-                                 @if(count($item->images))
-                                 src="{{ url('assets/img/home/portfolio/'. $item->images[0]->image_url) }}"
-                                    @endif
+                                @if (count($item->images)) src="{{ url('assets/img/home/portfolio/' . $item->images[0]->image_url) }}" @endif
                                 class="img-fluid img-thumbnail" alt="">
                         </div>
                     </td>
@@ -141,10 +215,11 @@
                             <form action="{{ route('deletePortfolio', [$item->id]) }}" method="post">
                                 @method('delete')
                                 @csrf
-                                <input class="btn btn-danger" type="submit" value="Delete">
+                                <input class="btn btn-danger show-confirm" type="submit" value="Delete">
                             </form>
                             <!-- Button trigger modal -->
-                            <button onclick="previewDistroy({{ $item->id }})" id="updateImageBtn" type="button" class="btn btn-primary" data-bs-toggle="modal"
+                            <button onclick="previewDistroy({{ $item->id }})" id="updateImageBtn" type="button"
+                                class="btn btn-primary" data-bs-toggle="modal"
                                 data-bs-target="#exampleModal{{ $item->id }}">
                                 Edit
                             </button>
@@ -170,25 +245,28 @@
                                                         <div class="col">
                                                             <div class="card border-2 border shadow-lg p-2 mb-0">
                                                                 <img style="height: 120px; widows: 80px;"
-                                                                src="{{ url('assets/img/home/portfolio/' . $image->image_url) }}"
-                                                                class="img-fluid img-thumbnail" alt="">
-                                                            <a href="{{ route('deletePortfolioSingleImage', [$image->id]) }}"
-                                                                class="btn btn-danger mt-2">DELETE</a>
-                                                            <div class="row row-cols-4">
-                                                            </div>
+                                                                    src="{{ url('assets/img/home/portfolio/' . $image->image_url) }}"
+                                                                    class="img-fluid img-thumbnail" alt="">
+                                                                <a href="{{ route('deletePortfolioSingleImage', [$image->id]) }}"
+                                                                    class="btn btn-danger mt-2 show-confirm">DELETE</a>
+                                                                <div class="row row-cols-4">
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     @endforeach
                                                 </div>
                                                 <div id="preview-update-images{{ $item->id }}" class="mt-5">
                                                 </div>
-                                                <label class="mb-5" for="updateImage{{ $item->id }}" class="w-100 text-center mb-2">
+                                                <label class="mb-5" for="updateImage{{ $item->id }}"
+                                                    class="w-100 text-center mb-2">
                                                     <i style="font-size:48px;" class="bi bi-upload w-100"></i><br>
                                                     <span>Upload Product Images</span>
                                                 </label>
-                                                <input onchange="previewPhotoUpdatePhoto({{ $item->id }})"  draggable="true" multiple placeholder="select image"
-                                                    class="update_images w-100 border my-1 form-control border-secondary" type="file"
-                                                    name="update_img{{ $item->id }}[]" id="updateImage{{ $item->id }}">
+                                                <input onchange="previewPhotoUpdatePhoto({{ $item->id }})"
+                                                    draggable="true" multiple placeholder="select image"
+                                                    class="update_images w-100 border my-1 form-control border-secondary"
+                                                    type="file" name="update_img{{ $item->id }}[]"
+                                                    id="updateImage{{ $item->id }}">
                                                 <input name="name"
                                                     class="w-100 border-secondary-subtle input-text rounded px-3 form-control border-secondary"
                                                     type="text" name="title" id=""

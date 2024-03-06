@@ -35,7 +35,8 @@ class AppServiceProvider extends ServiceProvider
             $portfolios=Portfolio::with('images')->get();
             // dd(count($portfolios[0]->images));
             $portfolioDescription='';
-            $categories=Categories::get('category_name');
+            $categories=Categories::get(['category_name', 'id']);
+
             foreach ($sectionDescriptions as $item) {
                 if ($item->section_name=='portfolio') {
                     $portfolioDescription=$item->description;

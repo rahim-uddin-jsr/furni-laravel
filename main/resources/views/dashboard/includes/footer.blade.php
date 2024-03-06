@@ -35,15 +35,33 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
     integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous">
 </script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 <!-- Template Main JS File -->
 <script src="{{ asset('assets/js/main.js') }}"></script>
 <script>
-    function getImage() {
-        console.log('first')
-        console.log(inputImage)
-
-    }
-
+    $('.show-confirm').click(function(e) {
+         const form = $(this).closest('form');
+         e.preventDefault();
+         Swal.fire({
+             title: "Are you sure?",
+             text: "You won't be able to revert this!",
+             icon: "warning",
+             showCancelButton: true,
+             confirmButtonColor: "#3085d6",
+             cancelButtonColor: "#d33",
+             confirmButtonText: "Yes, delete it!"
+         }).then((result) => {
+             if (result.isConfirmed) {
+                form.submit();
+                 Swal.fire({
+                     title: "Deleted!",
+                     text: "Your file has been deleted.",
+                     icon: "success"
+                 });
+             }
+         });
+     });
     const input = document.getElementById('uploadImage');
     const inputUpdate = document.getElementById('updateImage');
     // input.addEventListener('change', previewPhoto);
