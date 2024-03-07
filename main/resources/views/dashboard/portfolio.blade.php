@@ -34,16 +34,33 @@
             </thead>
             <tbody>
                 @foreach ($categories as $key => $item)
-                    {{ $item->category_name }}
+                    {{-- {{ $item->category_name }} --}}
                     <tr>
                         <th scope="row">{{ $key + 1 }}</th>
                         <td>{{ $item->category_name }}</td>
                         <td class="d-flex justify-content-center gap-3">
+                            <div class="dropdown">
+                                <button class="btn btn-info dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="bi bi-gear"></i>
+                                </button>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                                    <div class="dropdown-item">
+                                        <button type="button" class="btn btn-info" data-toggle="modal"
+                                        data-target="#updateCategoryModal{{ $item->id }}">Update category</button>
+                                    </div>
+                                    <div class="dropdown-item">
+                                        <form action="{{ route('deleteCategory', $item->id) }}" method="post">
+                                            @method('delete')
+                                            @csrf
+                                            <button type="submit" class="btn btn-danger show-confirm w-100">Delete</button>
+                                        </form>
+                                    </div>
+                                </div>
+                              </div>
                             <form action="{{ route('updateCategory', $item->id) }}" method="post">
                                 @method('put')
                                 @csrf
-                                <button type="button" class="btn btn-info" data-toggle="modal"
-                                    data-target="#updateCategoryModal{{ $item->id }}">Update category</button>
+
                                 {{-- Modal  --}}
                                 <div class="modal fade" id="updateCategoryModal{{ $item->id }}" tabindex="-1"
                                     role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -74,11 +91,9 @@
                                     </div>
                                 </div>
                             </form>
-                            <form action="{{ route('deleteCategory', $item->id) }}" method="post">
-                                @method('delete')
-                                @csrf
-                                <button type="submit" class="btn btn-danger show-confirm">Delete</button>
-                            </form>
+                            <div class="dropdown">
+                            </div>
+
                         </td>
                     </tr>
                 @endforeach
@@ -213,8 +228,30 @@
                     <td>{{ $item->project_url }}</td>
                     <td>{{ $item->category }}</td>
                     <td>
+                        <div class="dropdown">
+                            <button class="btn btn-info dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="bi bi-gear"></i>
+                            </button>
+                            <div class="dropdown-menu d-2" aria-labelledby="dropdownMenu2">
+                                <div class="dropdown-item">
+                                    <form action="{{ route('deletePortfolio', [$item->id]) }}" method="post">
+                                        @method('delete')
+                                        @csrf
+                                        <input class="btn btn-danger show-confirm w-100" type="submit" value="Delete">
+                                    </form>
+                                </div>
+                                <div class="dropdown-item">
+                                   <!-- Button trigger modal -->
+                            <button onclick="previewDistroy({{ $item->id }})" id="updateImageBtn" type="button"
+                                class="btn btn-primary w-100" data-bs-toggle="modal"
+                                data-bs-target="#exampleModal{{ $item->id }}">
+                                Edit
+                            </button>
+                                </div>
+                            </div>
+                          </div>
 
-                        <div class="d-flex gap-2 justify-content-center">
+                        {{-- <div class="d-flex gap-2 justify-content-center">
                             <form action="{{ route('deletePortfolio', [$item->id]) }}" method="post">
                                 @method('delete')
                                 @csrf
@@ -226,7 +263,7 @@
                                 data-bs-target="#exampleModal{{ $item->id }}">
                                 Edit
                             </button>
-                        </div>
+                        </div> --}}
                         <!-- Modal -->
                         <div class="modal fade" id="exampleModal{{ $item->id }}" tabindex="-1"
                             aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -252,13 +289,13 @@
                                                                     class="img-fluid img-thumbnail" alt="">
                                                                 <a href="{{ route('deletePortfolioSingleImage', [$image->id]) }}"
                                                                     class="btn btn-danger mt-2 delete-confirm">DELETE</a>
-                                                                    @if($image->is_primary)
+                                                                @if ($image->is_primary)
                                                                     <button disabled
                                                                         class="btn btn-success mt-2 show-confirm">primary</button>
-                                                                    @else
-                                                                    <a href="{{ route('makeImagePrimary',[$image->id]) }}"
+                                                                @else
+                                                                    <a href="{{ route('makeImagePrimary', [$image->id]) }}"
                                                                         class="btn btn-primary mt-2   ">Make Primary</a>
-                                                                    @endif
+                                                                @endif
                                                             </div>
                                                         </div>
                                                     @endforeach

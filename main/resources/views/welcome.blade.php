@@ -297,7 +297,7 @@
                     data-aos-delay="100">
                     <li data-filter="*" class="filter-active">All</li>
                     @foreach ($categories as $item)
-                    <li data-filter=".filter-{{ $item->category_name }}">{{ $item->category_name }}</li>
+                    <li data-filter=".filter-{{ str_replace(' ', '-', $item->category_name)  }}">{{ $item->category_name  }}</li>
                     @endforeach
                     {{-- <li data-filter=".filter-card">Card</li>
                     <li data-filter=".filter-web">Web</li> --}}
@@ -306,7 +306,7 @@
                 <div class="row portfolio-container" data-aos="fade-up" data-aos-delay="200">
                     @foreach ($portfolios as $key => $item)
 
-                    <div class="col-lg-4 col-md-6 portfolio-item filter-{{ $item->category }}">
+                    <div class="col-lg-4 col-md-6 portfolio-item filter-{{ str_replace(' ', '-', $item->category)  }}">
                             <div class="portfolio-img">
                                 @foreach ($item->images as $image)
                                    @if ($image->is_primary)
