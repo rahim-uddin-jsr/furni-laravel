@@ -282,13 +282,15 @@
                                             <div class="p-3">
                                                 <div id=" " class="row g-2 row-cols-4 mb-3">
                                                     @foreach ($item->images as $image)
-                                                        <div class="col">
+                                                        <div id="imageCard{{ $image->id }}" class="col">
                                                             <div class="card border-2 border shadow-lg p-2 mb-0">
                                                                 <img style="height: 120px; widows: 80px;"
                                                                     src="{{ url('assets/img/home/portfolio/' . $image->image_url) }}"
                                                                     class="img-fluid img-thumbnail" alt="">
-                                                                <a href="{{ route('deletePortfolioSingleImage', [$image->id]) }}"
-                                                                    class="btn btn-danger mt-2 delete-confirm">DELETE</a>
+                                                                <button onclick="deleteImage({{ $image->id }})"
+                                                                    class="btn btn-danger mt-2">DELETE</button>
+                                                                {{-- <a href="{{ route('deletePortfolioSingleImage', [$image->id]) }}"
+                                                                    class="btn btn-danger mt-2 delete-confirm">DELETE</a> --}}
                                                                 @if ($image->is_primary)
                                                                     <button disabled
                                                                         class="btn btn-success mt-2 show-confirm">primary</button>
@@ -296,6 +298,7 @@
                                                                     <a href="{{ route('makeImagePrimary', [$image->id]) }}"
                                                                         class="btn btn-primary mt-2   ">Make Primary</a>
                                                                 @endif
+                                                                <div id="div{{ $image->id }}"></div>
                                                             </div>
                                                         </div>
                                                     @endforeach

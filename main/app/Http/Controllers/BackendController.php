@@ -10,6 +10,7 @@ use App\ProductFeatures;
 use App\SectionDescription;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
+use PhpParser\Node\Stmt\TryCatch;
 
 class BackendController extends Controller
 {
@@ -114,12 +115,17 @@ class BackendController extends Controller
     {
         $portfolio = PortfolioImage::find($id);
         // dd($portfolio);
+       try {
         $portfolio->delete();
         $destination = 'assets/img/home/portfolio/' . $portfolio->image_url;
         if (File::exists($destination)) {
             File::delete($destination);
         }
-        return back();
+        return "deleted";
+    } catch (\Throwable $th) {
+           return $th;
+       }
+
     }
     public function updatePortfolioSingleImage(Request $request, $id)
     {
@@ -136,7 +142,6 @@ class BackendController extends Controller
             $file->move('assets/img/home/portfolio', $filename);
             $portfolioUpdateImage->update([
                 'image_url' => $filename,
-
             ]);
             if (File::exists($destination)) {
                 File::delete($destination);

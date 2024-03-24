@@ -36,6 +36,8 @@
     integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous">
 </script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+{{-- ajax  --}}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
 <!-- Template Main JS File -->
 <script src="{{ asset('assets/js/main.js') }}"></script>
@@ -75,13 +77,14 @@
             confirmButtonText: "Yes, delete it!"
         }).then((result) => {
             if (result.isConfirmed) {
-                var href = this.getAttribute('href');
-                window.location.href = href;
-                Swal.fire({
-                    title: "Deleted!",
-                    text: "Your file has been deleted.",
-                    icon: "success"
-                });
+                alert('trying to delete')
+                // var href = this.getAttribute('href');
+                // window.location.href = href;
+                // Swal.fire({
+                //     title: "Deleted!",
+                //     text: "Your file has been deleted.",
+                //     icon: "success"
+                // });
             }
         });
     });
@@ -174,6 +177,42 @@
     // iterator.addEventListener("change", previewPhotoUpdatePhoto);
     //     }
     // console.log(up)
+
+
+    function deleteImage(id) {
+        event.preventDefault()
+
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete it!"
+        }).then((result) => {
+            if (result.isConfirmed) {
+
+
+                $.ajax({
+                    url: "delete-portfolio-single-image/" + id,
+                    success: function(result) {
+                        if (result == 'deleted') {
+                            $("#imageCard" + id).hide();
+                            Swal.fire({
+                    title: "Deleted!",
+                    text: "Your file has been deleted.",
+                    icon: "success"
+                });
+                        } else {
+                            alert('something went wrong try again later')
+                        }
+                    }
+                });
+            }
+        });
+
+    }
 </script>
 </body>
 

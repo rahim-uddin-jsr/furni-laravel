@@ -1,4 +1,7 @@
 <?php
+
+use App\Portfolio;
+
 function checkIsNull($item)
 {
     if ($item) {
@@ -7,3 +10,4 @@ function checkIsNull($item)
         return "off";
     }
 }
+

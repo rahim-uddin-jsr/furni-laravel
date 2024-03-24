@@ -284,7 +284,6 @@
 
             </div>
         </section><!-- End Cta Section -->
-
         <!-- ======= Portfolio Section ======= -->
         <section id="portfolio" class="portfolio">
             <div class="container" data-aos="fade-up">
@@ -296,8 +295,10 @@
                 <ul id="portfolio-flters" class="d-flex justify-content-center" data-aos="fade-up"
                     data-aos-delay="100">
                     <li data-filter="*" class="filter-active">All</li>
-                    @foreach ($categories as $item)
-                    <li data-filter=".filter-{{ str_replace(' ', '-', $item->category_name)  }}">{{ $item->category_name  }}</li>
+                    {{-- {{ $categoriesHasProduct }} --}}
+                    @foreach ($categoriesHasProduct as $item)
+
+                    <li data-filter=".filter-{{ str_replace(' ', '-', $item)  }}">{{ $item }}</li>
                     @endforeach
                     {{-- <li data-filter=".filter-card">Card</li>
                     <li data-filter=".filter-web">Web</li> --}}

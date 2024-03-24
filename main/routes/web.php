@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Middleware\UserRoutePermissionMiddleware;
+use App\Portfolio;
 use App\Product;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -17,7 +18,8 @@ use Illuminate\Support\Facades\Route;
  */
 
 Route::get('/', function () {
-    return view('welcome');
+    $categoriesHasProduct = Portfolio::distinct()->pluck('category');
+    return view('welcome')->with('categoriesHasProduct',$categoriesHasProduct);
 });
 
 Auth::routes();

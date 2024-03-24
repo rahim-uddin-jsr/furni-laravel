@@ -36,7 +36,6 @@ class AppServiceProvider extends ServiceProvider
             // dd(count($portfolios[0]->images));
             $portfolioDescription='';
             $categories=Categories::get(['category_name', 'id']);
-
             foreach ($sectionDescriptions as $item) {
                 if ($item->section_name=='portfolio') {
                     $portfolioDescription=$item->description;
@@ -55,7 +54,6 @@ class AppServiceProvider extends ServiceProvider
                     $developer_plan_price=$item->price;
                 }
             }
-
             $view->with('sectionDescriptions', $sectionDescriptions);
             $view->with('portfolioDescription', $portfolioDescription);
             $view->with('categories', $categories);
